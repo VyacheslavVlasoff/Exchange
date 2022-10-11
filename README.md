@@ -10,6 +10,6 @@
 •	Реализация удобного пользовательского интерфейса
 •	Размещение и поиск товаров для обмена
  
-Макет приложения
-
+# Макет приложения
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Account.png">
  	
