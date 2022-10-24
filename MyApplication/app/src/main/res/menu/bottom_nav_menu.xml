@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/icon_home"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_katalog"
+        android:icon="@drawable/icon_katalog"
+        android:title="@string/title_katalog" />
+
+    <item
+        android:id="@+id/navigation_wishes"
+        android:icon="@drawable/icon_wishes"
+        android:title="@string/title_wishes" />
+
+    <item
+        android:id="@+id/navigation_message"
+        android:icon="@drawable/icon_message"
+        android:title="Сообщения" />
+
+    <item
+        android:id="@+id/navigation_account"
+        android:icon="@drawable/icon_account"
+        android:title="Аккаунт" />
+
+</menu>
