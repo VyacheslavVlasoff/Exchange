@@ -1,16 +1,19 @@
 package com.example.myapplication
 
+import android.R.attr.accountType
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.example.myapplication.R
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var etEmail: EditText
@@ -21,7 +24,7 @@ class SignUpActivity : AppCompatActivity() {
 
     // create Firebase authentication object
     private lateinit var auth: FirebaseAuth
-
+    //private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -51,9 +54,14 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signUpUser() {
+        val name = "Ivan"
+        val surname = "Ivanov"
         val email = etEmail.text.toString()
         val pass = etPass.text.toString()
         val confirmPassword = etConfPass.text.toString()
+
+        // Obtain the FirebaseAnalytics instance.
+        //firebaseAnalytics = Firebase.analytics
 
         // check pass
         if (email.isBlank() || pass.isBlank() || confirmPassword.isBlank()) {
@@ -72,6 +80,13 @@ class SignUpActivity : AppCompatActivity() {
         // email and pass in it.
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
+                /*firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, name)
+                    param(FirebaseAnalytics.Param.ITEM_NAME, surname)
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+                }*/
+                //firebaseAnalytics.setUserProperty("Name", name)
+                //firebaseAnalytics.setUserProperty("Surname",surname)
                 Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:gravity="center">
 
         <EditText
             android:id="@+id/etEmailAddress"
@@ -29,7 +30,8 @@
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:text="19511@gapps.ispu.ru"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -44,7 +46,8 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:text="11111111"/>
 
         <Button
             android:id="@+id/btnLogin"
@@ -62,7 +65,7 @@
             android:gravity="center_horizontal"
             android:text="Нет аккаунта"
             android:textColor="#18206F"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
     </LinearLayout>
 
