@@ -11,19 +11,19 @@
 •	Размещение и поиск товаров для обмена
  
 # Макет приложения
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Account.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Autorizate.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Change account.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Chat.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Create account.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Home.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Katalog search.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Katalog.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Message.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/New pass.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/PIN.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Password.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Product.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/START.png">
-<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/Wishes.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Account.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Autorizate.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Change account.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Chat.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Create account.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Home.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Katalog search.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Katalog.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Message.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/New pass.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/PIN.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Password.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Product.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/START.png">
+<img src="https://github.com/VyacheslavVlasoff/Exchange/blob/main/src/Wishes.png">
  	
