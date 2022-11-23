@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingVertical="5dp"
+    android:paddingHorizontal="5dp">
+
+    <RelativeLayout
+        android:layout_width="170dp"
+        android:layout_height="240dp"
+        android:background="@drawable/product_item"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+            android:id="@+id/images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:scaleType="fitCenter"
+                android:layout_height="160dp"
+                android:layout_marginTop="10dp"/>
+
+        <ImageButton
+            android:id="@+id/imgBtnHeart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/icon_heart"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/images"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/text_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_home"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:singleLine="true"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

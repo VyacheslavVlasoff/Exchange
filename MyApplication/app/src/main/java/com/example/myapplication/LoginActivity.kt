@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.myapplication.R
+import com.example.myapplication.ui.home.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -51,11 +52,19 @@ class LoginActivity : AppCompatActivity() {
         // calling signInWithEmailAndPassword(email, pass)
         // function using Firebase auth object
         // On successful response Display a Toast
+
+        if (email.isBlank() || pass.isBlank()) {
+            Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Successfully LoggedIn", Toast.LENGTH_SHORT).show()
+                Intent(this, HomeFragment::class.java).putExtra("mail", email)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             } else
                 Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
         }

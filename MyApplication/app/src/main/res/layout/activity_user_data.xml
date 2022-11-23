@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".UserDataActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,68 +17,55 @@
         android:gravity="center">
 
         <EditText
-            android:id="@+id/etSEmailAddress"
+            android:id="@+id/etUserName"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="15dp"
-            android:autofillHints="emailAddress"
             android:ems="10"
-            android:hint="e-mail"
-            android:inputType="textEmailAddress"
+            android:hint="Имя"
+            android:inputType="text"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <EditText
-            android:id="@+id/etSPassword"
+            android:id="@+id/etUserSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
-            android:autofillHints="password"
             android:ems="10"
-            android:hint="Пароль"
-            android:inputType="textPassword"
+            android:hint="Фамилия"
+            android:inputType="text"
             android:minHeight="48dp"
             android:textColorHint="#757575"
             android:textColor="@color/black"/>
 
         <EditText
-            android:id="@+id/etSConfPassword"
+            android:id="@+id/etUserPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
-            android:autofillHints="password"
             android:ems="10"
-            android:hint="Повторите пароль"
-            android:inputType="textPassword"
+            android:hint="Номер телефона"
+            android:inputType="phone"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            tools:ignore="TextContrastCheck"
             android:textColor="@color/black"/>
 
         <Button
-            android:id="@+id/btnSSigned"
+            android:id="@+id/btnSaveData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:background="@drawable/gradient_blue"
-            android:text="Зарегестрироваться" />
+            android:background="@drawable/button3"
+            android:text="Сохранить" />
 
-        <TextView
-            android:id="@+id/tvRedirectLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:text="Уже есть аккаунт"
-            android:textColor="#18206F"
-            android:textSize="16sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

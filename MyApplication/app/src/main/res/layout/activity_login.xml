@@ -30,8 +30,7 @@
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            android:textColor="@color/black"
-            android:text="19511@gapps.ispu.ru"/>
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -46,8 +45,7 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:textColorHint="#757575"
-            android:textColor="@color/black"
-            android:text="11111111"/>
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/btnLogin"

@@ -49,6 +49,7 @@ class SignUpActivity : AppCompatActivity() {
         tvRedirectLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
     }
@@ -81,15 +82,17 @@ class SignUpActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
                 /*firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-                    param(FirebaseAnalytics.Param.ITEM_NAME, name)
-                    param(FirebaseAnalytics.Param.ITEM_NAME, surname)
-                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+                    //param(FirebaseAnalytics.Param.ITEM_NAME, name)
+                    //param(FirebaseAnalytics.Param.ITEM_NAME, surname)
+                    param(FirebaseAnalytics.Param.CONTENT_TYPE, "Image")
                 }*/
                 //firebaseAnalytics.setUserProperty("Name", name)
                 //firebaseAnalytics.setUserProperty("Surname",surname)
+                //firebaseAnalytics.setUserProperty("Image", "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d")
                 Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, UserDataActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
                 Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
             }
