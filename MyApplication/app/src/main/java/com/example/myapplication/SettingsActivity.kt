@@ -29,6 +29,10 @@ class SettingsActivity : AppCompatActivity() {
             //val userLog = Firebase.auth.currentUser
             startActivity(Intent(this, StartActivity::class.java))
             finish()
+            listWishes.clear()
+            listProduct.clear()
+            indexH.clear()
+            kategory = ""
         }
 
         val btnChange: Button = findViewById(R.id.btnChange)

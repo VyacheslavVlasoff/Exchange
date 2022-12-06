@@ -2,6 +2,9 @@ package com.example.myapplication
 
 import android.content.ClipDescription
 import android.content.Intent
+import android.graphics.Color.parseColor
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -14,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.ui.home.HomeFragment
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.collection.LLRBNode.Color
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -30,6 +34,20 @@ data class User(val name: String?,
                 val products: List<Product>,
                 val avatar: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 )
+data class Wish(val name: String?,
+                val cost: String?,
+                val type: String?,
+                val description: String?,
+                val location: String?,
+                val image: String?,
+                val request: Boolean?
+)
+
+val listType = listOf<String>("Обувь", "Одежда", "Посуда", "Другое")
+val listWishes = mutableListOf<Wish>()
+val listProduct = mutableListOf<Product>()
+val indexH = mutableListOf<Int>()
+var kategory = ""
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,7 +75,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_account
             )
         )
-        //setupActionBarWithNavController(navController, appBarConfiguration)
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 

@@ -15,22 +15,34 @@
         android:id="@+id/navigation_katalog"
         android:name="com.example.myapplication.ui.katalog.KatalogFragment"
         android:label="@string/title_katalog"
-        tools:layout="@layout/fragment_katalog" />
+        tools:layout="@layout/fragment_katalog" >
+        <action
+            android:id="@+id/action_navigation_katalog_to_katalogSearchFragment"
+            app:destination="@id/katalogSearchFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_wishes"
         android:name="com.example.myapplication.ui.wishes.WishesFragment"
         android:label="@string/title_wishes"
         tools:layout="@layout/fragment_wishes" />
+
     <fragment
         android:id="@+id/navigation_message"
         android:name="com.example.myapplication.ui.message.MessageFragment"
         android:label="Сообщения"
         tools:layout="@layout/fragment_message" />
+
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.example.myapplication.ui.account.AccountFragment"
         android:label="Аккаунт"
         tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/katalogSearchFragment"
+        android:name="com.example.myapplication.KatalogSearchFragment"
+        android:label=""
+        tools:layout="@layout/fragment_katalog_search" />
 
 </navigation>

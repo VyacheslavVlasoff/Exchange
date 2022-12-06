@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
@@ -24,5 +25,12 @@ class ProductActivity : AppCompatActivity() {
         tvNameProduct.text = nameProduct
         tvCostProduct.text = costProduct
         Picasso.get().load(imgProduct).into(image)
+
+        val btnBack: ImageButton = findViewById(R.id.backFromProduct)
+        btnBack.setOnClickListener {
+            finish()
+        }
+
+
     }
 }

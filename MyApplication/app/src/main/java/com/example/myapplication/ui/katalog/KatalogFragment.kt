@@ -1,35 +1,26 @@
 package com.example.myapplication.ui.katalog
 
-import android.content.ContentValues.TAG
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.media.Image
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.MainActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.*
 import com.example.myapplication.R
-import com.example.myapplication.Statics
-import com.example.myapplication.Task
-import com.example.myapplication.databinding.FragmentKatalogBinding
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import java.io.ByteArrayOutputStream
+
 
 class KatalogFragment : Fragment() {
 
@@ -43,6 +34,34 @@ class KatalogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        val recyclerView: RecyclerView = view.findViewById(R.id.katalogRecycler)
+        recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.adapter = CustomRecyclerAdapterForKatalog(listType)
     }
+}
+
+class CustomRecyclerAdapterForKatalog(private val names: List<String>) : RecyclerView
+.Adapter<CustomRecyclerAdapterForKatalog.MyKatalogViewHolder>() {
+
+    class MyKatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val typeText: TextView = itemView.findViewById(R.id.katalogItemText)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyKatalogViewHolder {
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_katalog, parent, false)
+        return MyKatalogViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: MyKatalogViewHolder, position: Int) {
+        holder.typeText.text = names[position]
+        holder.itemView.setOnClickListener { view ->
+            view.findNavController().navigate(R.id.katalogSearchFragment).apply {
+                kategory = names[position]
+            }
+        }
+    }
+
+    override fun getItemCount() = names.size
+
 }

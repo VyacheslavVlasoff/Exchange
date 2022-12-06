@@ -1,20 +1,20 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.navigation.findNavController
-import com.example.myapplication.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.ui.account.AccountFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
@@ -52,9 +52,32 @@ class ChangeDataActivity : AppCompatActivity() {
             database.child("Users").child(userLog?.uid!!).child("surname").setValue(etSurname.text.toString())
             database.child("Users").child(userLog?.uid!!).child("phone").setValue(etPhone.text.toString())
             Toast.makeText(this, "Данные обновлены", Toast.LENGTH_SHORT).show()
+            fun View.hideKeyboard() {
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(windowToken, 0)
+            }
+            etName.hideKeyboard()
+            etSurname.hideKeyboard()
+            etPhone.hideKeyboard()
+            etEmail.hideKeyboard()
             MainActivity().navigateUpTo(Intent(this, AccountFragment::class.java))
             finish()
         }
+
+        etName.setOnKeyListener (View.OnKeyListener { view, i, keyEvent ->
+            if ((keyEvent.action == KeyEvent.ACTION_DOWN) and
+                (i == KeyEvent.KEYCODE_ENTER)) {
+                etName.requestFocus()
+                etName.setFocusableInTouchMode(true)
+
+                val imm: InputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(etName, InputMethodManager.SHOW_FORCED)
+
+                true
+            }
+            false
+        })
     }
 
 

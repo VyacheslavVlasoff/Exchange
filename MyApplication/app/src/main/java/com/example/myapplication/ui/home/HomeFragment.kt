@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
 
         database = Firebase.database.reference
 
-            val products = mutableListOf(
+        /*    val products = mutableListOf(
             Product("Кроссовки1", "1250", "Обувь", "", ""),
             Product("Детская одежда1", "Бесплатно", "Одежда", "", ""),
             Product("Тетрадь в клетку1", "Обмен", "Другое", "", ""),
@@ -62,17 +62,44 @@ class HomeFragment : Fragment() {
             Product("Набор резинок1", "Обмен", "Другое", "", ""),
             Product("\"Волк с Уолл-Стрит\"1", "Бесплатно", "Другое", "", "")
         )
-        database.child("Users").child("New1").setValue(User("","" , "", products, ""))
+        database.child("Users").child("New1").setValue(User("","" , "", products, ""))*/
+
+        database.child("Users").child(userLog?.uid!!).child("wishes").get().addOnCompleteListener { wish ->
+            if (wish.isSuccessful) {
+
+                val snapshot2 = wish.result
+                snapshot2.children.forEach { pr ->
+                    val wish = Wish(
+                        snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("description").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("location").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("image").getValue(String::class.java),
+                        snapshot2.child(pr.key!!).child("request").getValue(Boolean::class.java)
+                    )
+                    if (listWishes.size == 0) listWishes.add(wish)
+                    else {
+                        var point = true
+                        for (wishes in listWishes)
+                            if (wishes == wish) point = false
+                        if (point) listWishes.add(wish)
+                    }
+                }
+            }
+        }
 
         database.child("Users").get().addOnCompleteListener { user ->
             if (user.isSuccessful) {
                 val snapshot = user.result
                 val products = mutableListOf<Product>()
+                listProduct.clear()
                 val userProducts = mutableListOf<Product>()
                 val users = mutableListOf<User>()
+                var wishes = mutableListOf<Wish>()
                 snapshot.children.forEach { email ->
                     if (email.key != userLog?.uid) {
-                        val snapshot2 = snapshot.child(email.key!!).child("products")
+                        var snapshot2 = snapshot.child(email.key!!).child("products")
                         snapshot2.children.forEach { pr ->
                             val element = Product(
                                 snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
@@ -84,6 +111,11 @@ class HomeFragment : Fragment() {
                             )
                             userProducts.add(element)
                             products.add(element)
+                            listProduct.add(element)
+                            indexH.add(products.indexOf(element),0);
+                            for (wish in listWishes)
+                                if (Wish(element.name, element.cost, element.type, element.description, element.location,
+                                    element.image, false) == wish) indexH.add(products.indexOf(element), 1)
                         }
                         users.add(
                             User(
@@ -158,6 +190,9 @@ class HomeFragment : Fragment() {
 class CustomRecyclerAdapter(private val names: List<Product>) : RecyclerView
 .Adapter<CustomRecyclerAdapter.MyViewHolder>() {
 
+    private var database: DatabaseReference = Firebase.database.reference
+    val userLog = Firebase.auth.currentUser
+
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameText: TextView = itemView.findViewById(R.id.text_home)
         val costText: TextView = itemView.findViewById(R.id.text_cost)
@@ -176,6 +211,13 @@ class CustomRecyclerAdapter(private val names: List<Product>) : RecyclerView
         holder.nameText.text = names[position].name
         holder.costText.text = names[position].cost
         Picasso.get().load(names[position].image).into(holder.image)
+        var data = Wish(names[position].name, names[position].cost, names[position].type, names[position].description,
+            names[position].location, names[position].image, false)
+        holder.index = indexH[position]
+        if (holder.index == 1) {
+            holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)
+        }
+        else holder.imgHeart.setBackgroundResource(R.drawable.icon_heart)
         holder.itemView.setOnClickListener { view ->
             view.context.startActivity(Intent(view.context, ProductActivity::class.java).apply {
                 putExtra("name", names[position].name)
@@ -187,11 +229,18 @@ class CustomRecyclerAdapter(private val names: List<Product>) : RecyclerView
             if (holder.index == 0) {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)
                 holder.index = 1
+                var point = true
+                for (wish in listWishes)
+                    if (wish == data) point = false
+                if (point) listWishes.add(data)
+                database.child("Users").child(userLog?.uid!!).child("wishes").setValue(listWishes)
                 Toast.makeText(holder.itemView.context, "Добавлено в желаемое", Toast.LENGTH_SHORT).show()
             }
             else {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart)
                 holder.index = 0
+                listWishes.remove(data)
+                database.child("Users").child(userLog?.uid!!).child("wishes").setValue(listWishes)
                 Toast.makeText(holder.itemView.context, "Удалено из желаемого", Toast.LENGTH_SHORT).show()
             }
         }
