@@ -1,50 +1,61 @@
-package com.example.myapplication.ui.wishes
+package com.example.myapplication.ui.katalogSearch
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
-import com.example.myapplication.databinding.FragmentWishesBinding
-import com.example.myapplication.ui.home.CustomRecyclerAdapter
+import com.example.myapplication.ui.katalog.CustomRecyclerAdapterForKatalog
+import com.example.myapplication.ui.wishes.CustomRecyclerAdapterForWishes
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
-class WishesFragment : Fragment() {
+class KatalogSearchFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View { return inflater.inflate(R.layout.fragment_wishes, container, false) }
+    ): View? {
+        setHasOptionsMenu(true)
+        return inflater.inflate(R.layout.fragment_katalog_search, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actionbar_fast_sort, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.open_sort -> {
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item);
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as AppCompatActivity).supportActionBar?.title = kategory
+        recyclerView = view.findViewById(R.id.sortKatalog)
+        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
         database = Firebase.database.reference
         val userLog = Firebase.auth.currentUser
-        val textWishes: TextView = view.findViewById(R.id.textWishes)
-        if (listWishes.size == 0) textWishes.text = "Список желаний пуст"
-        else textWishes.text = ""
-        recyclerView = view.findViewById(R.id.wishesRecycler)
-        recyclerView.layoutManager = GridLayoutManager(view.context, 2)
 
-        //найти список продуктов, которые в списке желаний
+        var products = mutableListOf<Product>()
+        val ind = mutableListOf<Int>()
         database.child("Users").get().addOnCompleteListener { user ->
             if (user.isSuccessful) {
                 val snapshot = user.result
@@ -63,24 +74,20 @@ class WishesFragment : Fragment() {
                                 snapshot2.child(pr.key!!).child("location").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("image").getValue(String::class.java)
                             )
-                            for (wish in listWishes) {
-                                if (wish.uid == element.uid && wish.prodId == element.prodId)
-                                {
-                                    products.add(element)
-                                }
+                            if (element.type == kategory) {
+                                products.add(element)
                             }
                         }
                     }
                 }
-                recyclerView.adapter = CustomRecyclerAdapterForWishes(products)
+                recyclerView.adapter = CustomRecyclerAdapterForElement(products, listWishes)
             }
         }
     }
-
 }
 
-class CustomRecyclerAdapterForWishes(private val names: List<Product>) : RecyclerView
-.Adapter<CustomRecyclerAdapterForWishes.MyViewHolder>() {
+class CustomRecyclerAdapterForElement(private val names: List<Product>, private val wishes: List<Wish>) : RecyclerView
+.Adapter<CustomRecyclerAdapterForElement.MyViewHolder>() {
 
     private var database: DatabaseReference = Firebase.database.reference
     val userLog = Firebase.auth.currentUser
@@ -90,7 +97,7 @@ class CustomRecyclerAdapterForWishes(private val names: List<Product>) : Recycle
         val costText: TextView = itemView.findViewById(R.id.text_cost)
         val image: ImageView = itemView.findViewById(R.id.img)
         val imgHeart: ImageButton = itemView.findViewById(R.id.imgBtnHeart)
-        var index: Int = 1
+        var index: Int = 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -103,7 +110,14 @@ class CustomRecyclerAdapterForWishes(private val names: List<Product>) : Recycle
         holder.nameText.text = names[position].name
         holder.costText.text = names[position].cost
         Picasso.get().load(names[position].image).into(holder.image)
-        holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)
+
+        holder.imgHeart.setBackgroundResource(R.drawable.icon_heart)
+        for(wish in wishes) {
+            if (wish.uid == names[position].uid && wish.prodId == names[position].prodId) {
+                holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)
+                holder.index = 1
+            }
+        }
         holder.itemView.setOnClickListener { view ->
             view.context.startActivity(Intent(view.context, ProductActivity::class.java).apply {
                 putExtra("name", names[position].name)
@@ -115,6 +129,7 @@ class CustomRecyclerAdapterForWishes(private val names: List<Product>) : Recycle
             if (holder.index == 0) {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)
                 holder.index = 1
+
                 listWishes.add(Wish(names[position].uid, names[position].prodId))
                 database.child("Users").child(userLog?.uid!!).child("wishes").setValue(listWishes)
                 Toast.makeText(holder.itemView.context, "Добавлено в желаемое", Toast.LENGTH_SHORT).show()
@@ -130,5 +145,4 @@ class CustomRecyclerAdapterForWishes(private val names: List<Product>) : Recycle
     }
 
     override fun getItemCount() = names.size
-
 }

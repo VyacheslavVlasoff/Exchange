@@ -41,8 +41,12 @@
 
     <fragment
         android:id="@+id/katalogSearchFragment"
-        android:name="com.example.myapplication.KatalogSearchFragment"
+        android:name="com.example.myapplication.ui.katalogSearch.KatalogSearchFragment"
         android:label=""
-        tools:layout="@layout/fragment_katalog_search" />
+        tools:layout="@layout/fragment_katalog_search" >
+        <action
+            android:id="@+id/action_katalogSearchFragment_to_navigation_katalog2"
+            app:destination="@id/navigation_katalog" />
+    </fragment>
 
 </navigation>

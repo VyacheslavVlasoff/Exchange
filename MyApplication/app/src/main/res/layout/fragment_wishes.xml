@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.wishes.WishesFragment">
 
+    <TextView
+        android:id="@+id/textWishes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="nana"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textColor="@color/black"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/wishesRecycler"
         android:layout_width="match_parent"

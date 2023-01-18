@@ -1,13 +1,17 @@
 package com.example.myapplication
 
 import android.R.attr.accountType
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.ui.account.AccountFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -47,10 +51,18 @@ class SignUpActivity : AppCompatActivity() {
 
         // switching from signUp Activity to Login Activity
         tvRedirectLogin.setOnClickListener {
+            fun View.hideKeyboard() {
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(windowToken, 0)
+            }
+            etEmail.hideKeyboard()
+            etConfPass.hideKeyboard()
+            etPass.hideKeyboard()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
+
 
     }
 
@@ -66,12 +78,12 @@ class SignUpActivity : AppCompatActivity() {
 
         // check pass
         if (email.isBlank() || pass.isBlank() || confirmPassword.isBlank()) {
-            Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Email и пароль не могут быть пустыми", Toast.LENGTH_SHORT).show()
             return
         }
 
         if (pass != confirmPassword) {
-            Toast.makeText(this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Пароли не совпадают", Toast.LENGTH_SHORT)
                 .show()
             return
         }
@@ -89,12 +101,12 @@ class SignUpActivity : AppCompatActivity() {
                 //firebaseAnalytics.setUserProperty("Name", name)
                 //firebaseAnalytics.setUserProperty("Surname",surname)
                 //firebaseAnalytics.setUserProperty("Image", "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d")
-                Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Успешная регистрация", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, UserDataActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ошибка при регистрации!", Toast.LENGTH_SHORT).show()
             }
         }
     }

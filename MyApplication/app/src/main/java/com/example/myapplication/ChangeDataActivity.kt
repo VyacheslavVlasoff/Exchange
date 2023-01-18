@@ -26,6 +26,10 @@ class ChangeDataActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_data)
 
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         val userLog = Firebase.auth.currentUser
         database = Firebase.database.reference
 
@@ -80,5 +84,9 @@ class ChangeDataActivity : AppCompatActivity() {
         })
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
 }

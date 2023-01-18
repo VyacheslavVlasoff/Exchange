@@ -37,7 +37,7 @@ class UserDataActivity : AppCompatActivity() {
         val userLog = Firebase.auth.currentUser
 
         database = Firebase.database.reference
-        database.child("Users").child(userLog?.uid!!).setValue(User("","", "", mutableListOf<Product>(), "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"))
+        database.child("Users").child(userLog?.uid!!).setValue(User(userLog?.uid!!,"","", "", mutableListOf<Product>(), "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"))
 
         btn.setOnClickListener {
             SetData()

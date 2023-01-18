@@ -37,6 +37,8 @@ class StartActivity : AppCompatActivity() {
             }
         }
         else setContentView(R.layout.activity_start)
+
+
     }
 
     fun GetStart(view: View) {

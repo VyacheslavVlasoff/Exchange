@@ -6,10 +6,15 @@ import android.graphics.Color.parseColor
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -21,29 +26,35 @@ import com.google.firebase.database.collection.LLRBNode.Color
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-data class Product(val name: String?,
+data class Product(val uid: String,
+                   val prodId: Int,
+                   val name: String?,
                    val cost: String?,
                    val type: String?,
                    val description: String?,
                    val location: String?,
                    val image: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 )
-data class User(val name: String?,
+data class AddProduct(val name: String?,
+                      val cost: String?,
+                      val type: String?,
+                      val description: String?,
+                      val location: String?,
+                      val image: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
+)
+data class User(val uid: String,
+                val name: String?,
                 val surname: String?,
                 val phone: String?,
                 val products: List<Product>,
                 val avatar: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 )
-data class Wish(val name: String?,
-                val cost: String?,
-                val type: String?,
-                val description: String?,
-                val location: String?,
-                val image: String?,
-                val request: Boolean?
+data class Wish(val uid: String,
+                val prodId: Int,
+                val request: Boolean = false
 )
 
-val listType = listOf<String>("Обувь", "Одежда", "Посуда", "Другое")
+val listType = listOf<String>("Обувь", "Одежда", "Для кухни", "Для учебы", "Книги", "Для детей", "Другое")
 val listWishes = mutableListOf<Wish>()
 val listProduct = mutableListOf<Product>()
 val indexH = mutableListOf<Int>()
@@ -56,7 +67,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //supportActionBar?.hide()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -76,11 +86,30 @@ class MainActivity : AppCompatActivity() {
             )
         )
         supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        //supportActionBar?.setBackgroundDrawable(resources.getColor(R.color.secondColor).toDrawable())
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
-    fun toSettings(view: View) {
-        startActivity(Intent(this, SettingsActivity::class.java))
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
+
+/*    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.actionbar_account, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.navigation_to_settings -> {
+            Toast.makeText(this, "ок", Toast.LENGTH_SHORT).show()
+            true
+        }
+        else -> {
+            true
+        }
+    }*/
 }

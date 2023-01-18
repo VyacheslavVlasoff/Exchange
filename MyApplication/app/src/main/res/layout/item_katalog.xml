@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
         android:background="@color/white"
-        android:backgroundTint="#999">
+        android:backgroundTint="#CCC">
 
         <TextView
             android:id="@+id/katalogItemText"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="1dp"
             android:background="@color/white"
-            android:drawableRight="@drawable/icon_search"
+            android:drawableRight="@drawable/arrow_katalog"
             android:gravity="left"
             android:padding="10dp"
             android:singleLine="true"
