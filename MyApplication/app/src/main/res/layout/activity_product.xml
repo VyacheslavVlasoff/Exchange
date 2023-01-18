@@ -23,16 +23,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"/>
 
-    <ImageButton
-        android:id="@+id/backFromProduct"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="10dp"
-        android:background="@drawable/arrow"/>
-
     <TextView
         android:id="@+id/costProduct"
         android:layout_width="match_parent"
@@ -95,15 +85,16 @@
         android:id="@+id/descriptionProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Описание..."
+        android:textColor="@color/black"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location"
-        tools:ignore="MissingConstraints"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="10dp"
-        android:textColor="@color/black"
-        android:text="Описание..."
-        android:textSize="20dp"/>
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btnAddWish"
@@ -112,6 +103,7 @@
         android:layout_margin="15dp"
         android:background="@drawable/button3"
         android:text="добавить в желаемое"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionProduct" />

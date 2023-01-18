@@ -27,4 +27,20 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_settings">SettingsActivity</string>
+
+    <string-array name="types">
+        <item/>
+        <item>Обмен</item>
+        <item>Продажа</item>
+        <item>Бесплатно</item>
+    </string-array>
+
+    <string-array name="typesProduct">
+        <item/>
+        <item>Другое</item>
+        <item>Обувь</item>
+        <item>Одежда</item>
+        <item>Посуда</item>
+    </string-array>
+
 </resources>

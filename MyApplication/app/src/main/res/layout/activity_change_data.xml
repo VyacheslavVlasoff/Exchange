@@ -14,40 +14,16 @@
     tools:context=".ChangeDataActivity"
     android:background="@color/white">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="РЕДАКТИРОВАНИЕ ДАННЫХ"
-            android:textAlignment="center"
-            android:textColor="#1A73E9"
-            android:textSize="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints"
-            android:layout_marginVertical="58dp"
-            android:singleLine="true"/>
-
-    <ImageButton
-        android:id="@+id/backFromChangeData"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="16dp"/>
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image_change"
         android:layout_width="250dp"
         android:layout_height="250dp"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:layout_marginTop="25dp"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
 
@@ -166,9 +142,10 @@
         android:layout_margin="15dp"
         android:background="@drawable/button3"
         android:text="Сохранить"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail"/>
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

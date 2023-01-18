@@ -2,12 +2,11 @@ package com.example.myapplication.ui.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -32,11 +31,31 @@ class AccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_account, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actionbar_account, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.navigation_to_settings -> {
+            startActivity(Intent(context, SettingsActivity::class.java))
+            true
+        }
+        else -> {
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val btnAdd: ImageButton = view.findViewById(R.id.imageButtonAdd)
+        btnAdd.setOnClickListener {
+            startActivity(Intent(view.context, CreateProductActivity::class.java))
+        }
 
         val userLog = Firebase.auth.currentUser
         database = Firebase.database.reference
@@ -99,11 +118,6 @@ class AccountFragment : Fragment() {
                 recyclerView.layoutManager = GridLayoutManager(view.context, 2)
                 recyclerView.adapter = CustomRecyclerAdapterForUser(products)
             }
-        }
-
-        val btn: ImageButton = view.findViewById(R.id.imageButtonSettings)
-        btn.setOnClickListener {
-            startActivity(Intent(view.context, SettingsActivity::class.java))
         }
     }
 }

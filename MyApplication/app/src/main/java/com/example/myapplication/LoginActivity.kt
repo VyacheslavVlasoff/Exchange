@@ -1,8 +1,11 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -39,6 +42,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvRedirectSignUp.setOnClickListener {
+            fun View.hideKeyboard() {
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(windowToken, 0)
+            }
+            etEmail.hideKeyboard()
+            etPass.hideKeyboard()
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
             // using finish() to end the activity
@@ -54,19 +63,19 @@ class LoginActivity : AppCompatActivity() {
         // On successful response Display a Toast
 
         if (email.isBlank() || pass.isBlank()) {
-            Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Email и пароль не могут быть пустыми", Toast.LENGTH_SHORT).show()
             return
         }
 
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
-                Toast.makeText(this, "Successfully LoggedIn", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Добро пожаловать", Toast.LENGTH_SHORT).show()
                 Intent(this, HomeFragment::class.java).putExtra("mail", email)
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             } else
-                Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ошибка при входе!", Toast.LENGTH_SHORT).show()
         }
     }
 
