@@ -2,13 +2,8 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.squareup.picasso.Picasso
 
 class ProductActivity : AppCompatActivity() {
@@ -16,7 +11,7 @@ class ProductActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
 
-        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gradColor1))
         supportActionBar?.title = intent.getStringExtra("name")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

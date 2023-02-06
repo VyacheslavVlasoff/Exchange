@@ -8,5 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#777</color>
-    <color name="secondColor">#F5F5F5</color>
+    <color name="secondColor">#f5f5f5</color>
+    <color name="backColor">#f0dfe0</color>
+
+    <color name="gradColor1">#1E88E5</color>
+    <color name="gradColor2">#42A5F5</color>
 </resources>

@@ -26,7 +26,7 @@ class ChangeDataActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_change_data)
 
-        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gradColor1))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 

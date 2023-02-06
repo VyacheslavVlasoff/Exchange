@@ -29,21 +29,19 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <string-array name="types">
-        <item/>
         <item>Обмен</item>
         <item>Продажа</item>
         <item>Бесплатно</item>
     </string-array>
 
     <string-array name="typesProduct">
-        <item/>
         <item>Другое</item>
         <item>Обувь</item>
         <item>Одежда</item>
-        <item>Для кухни</item>
-        <item>Для учебы</item>
-        <item>Книги</item>
+        <item>Для дома</item>
+        <item>Мебель</item>
         <item>Для детей</item>
     </string-array>
 
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAoE7JL</string>
 </resources>

@@ -58,17 +58,10 @@ class HomeFragment : Fragment() {
 
         database = Firebase.database.reference
 
-        /*val elements = mutableListOf<AddProduct>(
-            AddProduct("Книга \"Волк с Уолл Стрит\"","Обмен", "Книги",
-                "Хочу поменять книгу на первые две книги по Гарри Поттеру", "",
-            "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/5a216fb4c6ab9e30b80dadd9.jpg?alt=media&token=a3a70c6a-166f-415c-a658-737762f4da03"),
-            AddProduct("Тетрадь в клетку","Бесплатно", "Для учебы",
-                "Отдаю за ненадобностью. Совсем новая", "",
-            "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/879f76207652292a70b07955ce5445f8.jpg?alt=media&token=fa8cc6d2-2554-42a8-97e9-3001e8558dac"),
-            AddProduct("Одежда на девочку","Бесплатно", "Для детей", "", "",
-            "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/tyomka37-product-images-3409.jpg?alt=media&token=edd039a8-da17-43e3-82bb-10ba88310930")
+        /*var elements = mutableListOf(
+            "4","52","54","56"
         )
-        database.child("Users").child(userLog?.uid!!).child("products").setValue(elements)*/
+        database.child("Streets").child("1-я Булатовская улица").setValue(elements)*/
 
         //список желаний
         val wishes = mutableListOf<Wish>()

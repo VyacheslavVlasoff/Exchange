@@ -1,25 +1,16 @@
 package com.example.myapplication.ui.katalog
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
 import com.example.myapplication.R
-import com.google.firebase.database.*
 
 
 class KatalogFragment : Fragment() {
@@ -36,11 +27,11 @@ class KatalogFragment : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById(R.id.katalogRecycler)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = CustomRecyclerAdapterForKatalog(listType)
+        recyclerView.adapter = CustomRecyclerAdapterForKatalog(resources.getStringArray(R.array.typesProduct))
     }
 }
 
-class CustomRecyclerAdapterForKatalog(private val names: List<String>) : RecyclerView
+class CustomRecyclerAdapterForKatalog(private val names: Array<String>) : RecyclerView
 .Adapter<CustomRecyclerAdapterForKatalog.MyKatalogViewHolder>() {
 
     class MyKatalogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

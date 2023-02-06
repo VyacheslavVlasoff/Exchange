@@ -1,30 +1,14 @@
 package com.example.myapplication
 
-import android.content.ClipDescription
-import android.content.Intent
-import android.graphics.Color.parseColor
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.ui.home.HomeFragment
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.collection.LLRBNode.Color
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 data class Product(val uid: String,
                    val prodId: Int,
@@ -54,7 +38,7 @@ data class Wish(val uid: String,
                 val request: Boolean = false
 )
 
-val listType = listOf<String>("Обувь", "Одежда", "Для кухни", "Для учебы", "Книги", "Для детей", "Другое")
+//val listType = listOf<String>("Обувь", "Одежда", "Для дома", "Мебель", "Для детей", "Другое")
 val listWishes = mutableListOf<Wish>()
 val listProduct = mutableListOf<Product>()
 val indexH = mutableListOf<Int>()
@@ -85,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_account
             )
         )
-        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.gradient_blue))
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gradColor1))
         //supportActionBar?.setBackgroundDrawable(resources.getColor(R.color.secondColor).toDrawable())
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
