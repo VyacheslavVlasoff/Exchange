@@ -11,7 +11,7 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
 
 data class Product(val uid: String,
-                   val prodId: Int,
+                   val prodId: String,
                    val name: String?,
                    val cost: String?,
                    val type: String?,
@@ -24,7 +24,7 @@ data class AddProduct(val name: String?,
                       val type: String?,
                       val description: String?,
                       val location: String?,
-                      val image: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
+                      var image: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 )
 data class User(val uid: String,
                 val name: String?,
@@ -34,7 +34,7 @@ data class User(val uid: String,
                 val avatar: String? = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 )
 data class Wish(val uid: String,
-                val prodId: Int,
+                val prodId: String,
                 val request: Boolean = false
 )
 

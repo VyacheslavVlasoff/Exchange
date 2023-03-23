@@ -64,7 +64,8 @@ class ChangeDataActivity : AppCompatActivity() {
             etSurname.hideKeyboard()
             etPhone.hideKeyboard()
             etEmail.hideKeyboard()
-            MainActivity().navigateUpTo(Intent(this, AccountFragment::class.java))
+            fragmentManager.findFragmentById(R.id.navigation_account)
+            //MainActivity().navigateUpTo(Intent(this, AccountFragment::class.java))
             finish()
         }
 

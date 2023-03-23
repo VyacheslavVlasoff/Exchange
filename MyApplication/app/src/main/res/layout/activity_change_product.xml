@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ChangeProductActivity">
+
+        <ImageView
+            android:id="@+id/imgProductChange"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/border_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNameProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:text="Название"
+            android:textColor="#AAA"
+            android:textSize="14dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgProductChange"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/etNameProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvNameProductChange" />
+
+        <LinearLayout
+            android:id="@+id/llTypeExchangeChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etNameProductChange">
+
+            <TextView
+                android:id="@+id/tvTypeExchangeChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:text="Обмен или продажа"
+                android:textColor="#AAA"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <Spinner
+                android:id="@+id/spinnerTypesChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:padding="5dp"/>
+
+            <TextView
+                android:id="@+id/tvCostProductChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:text="Цена"
+                android:textColor="#AAA"
+                android:textSize="14dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerTypesChange"/>
+
+            <EditText
+                android:id="@+id/etCostProductChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:singleLine="true"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:hint="0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCostProductChange"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTypeProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Тип продукта"
+            android:textColor="#AAA"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTypeExchangeChange"
+            tools:ignore="MissingConstraints" />
+
+        <Spinner
+            android:id="@+id/spinnerTypesProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:entries="@array/typesProduct"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvTypeProductChange" />
+
+        <TextView
+            android:id="@+id/tvLocationProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Место сделки"
+            android:textColor="#AAA"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinnerTypesProductChange"
+            tools:ignore="MissingConstraints" />
+
+        <AutoCompleteTextView
+            android:id="@+id/etLocationProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:singleLine="true"
+            android:completionThreshold = "1"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLocationProductChange" />
+
+        <TextView
+            android:id="@+id/tvDescriptionProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Описание"
+            android:textColor="#AAA"
+            android:textSize="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etLocationProductChange"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/etDescriptionProductChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDescriptionProductChange" />
+
+        <Button
+            android:id="@+id/btnChangeThisProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginVertical="35dp"
+            android:background="@drawable/button3"
+            android:text="сохранить изменения"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etDescriptionProductChange" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

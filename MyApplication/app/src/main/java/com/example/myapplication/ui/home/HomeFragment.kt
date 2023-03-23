@@ -1,16 +1,13 @@
 package com.example.myapplication.ui.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import android.widget.TextView.OnEditorActionListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
@@ -20,7 +17,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
@@ -42,6 +38,10 @@ class HomeFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.open_sort -> {
+            //findNavController().navigate(R.id.sortFragment)
+            val sortFr: SortFragment = SortFragment()
+            val ft: FragmentTransaction? = fragmentManager?.beginTransaction()
+            sortFr.show(ft!!, "dialog")
             true
         }
         else -> {
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
                 snapshot2.children.forEach { pr ->
                     wishes.add(Wish(
                         userLog.uid.toString(),
-                        pr.key!!.toInt(),
+                        pr.key!!.toString(),
                         snapshot2.child(pr.key!!).child("request").getValue(Boolean::class.java)!!
                     )
                     )
@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
                         snapshot2.children.forEach { pr ->
                             val element = Product(
                                 email.key.toString(),
-                                pr.key!!.toInt(),
+                                pr.key!!.toString(),
                                 snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
@@ -216,7 +216,10 @@ class CustomRecyclerAdapter(private val names: List<Product>, private val wishes
                 putExtra("cost", names[position].cost)
                 putExtra("img", names[position].image)
                 putExtra("description", names[position].description)
-                putExtra("location", names[position].location)}) }
+                putExtra("location", names[position].location)
+            putExtra("index", holder.index)
+            putExtra("uid", names[position].uid)
+            putExtra("prodId", names[position].prodId)}) }
         holder.imgHeart.setOnClickListener {
             if (holder.index == 0) {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)

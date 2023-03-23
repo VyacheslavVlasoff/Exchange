@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.katalog
 
+import android.content.ClipData
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
 import com.example.myapplication.R
+import com.example.myapplication.ui.katalogSearch.KatalogSearchFragment
 
 
 class KatalogFragment : Fragment() {

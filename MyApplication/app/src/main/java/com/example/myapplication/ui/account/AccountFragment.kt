@@ -91,7 +91,7 @@ class AccountFragment : Fragment() {
                         snapshot2.children.forEach { pr ->
                             val element = Product(
                                 email.key.toString(),
-                                pr.key!!.toInt(),
+                                pr.key!!.toString(),
                                 snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
@@ -147,12 +147,14 @@ class CustomRecyclerAdapterForUser(private val names: List<Product>) : RecyclerV
         holder.imgHeart.isClickable = false
         holder.imgHeart.isVisible = false
         holder.itemView.setOnClickListener { view ->
-            view.context.startActivity(Intent(view.context, ProductActivity::class.java).apply {
+            view.context.startActivity(Intent(view.context, ProductUserActivity::class.java).apply {
                 putExtra("name", names[position].name)
                 putExtra("cost", names[position].cost)
                 putExtra("img", names[position].image)
                 putExtra("description", names[position].description)
-                putExtra("location", names[position].location)}) }
+                putExtra("location", names[position].location)
+            putExtra("uid", names[position].prodId)
+            putExtra("uidUser", names[position].uid)}) }
     }
 
     override fun getItemCount() = names.size

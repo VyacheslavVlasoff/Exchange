@@ -6,11 +6,12 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.ktx.auth
@@ -25,50 +26,49 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
 
-
-class CreateProductActivity : AppCompatActivity() {
+class ChangeProductActivity : AppCompatActivity() {
 
     private lateinit var database: DatabaseReference
     private var mCropImageUri: Uri? = null
     private var imageStroke: String = ""
     private var imageKey: String = ""
 
-    private lateinit var imgProductCreate: ImageView
-    private lateinit var btnCreateProduct: Button
+    private lateinit var imgProductChange: ImageView
+    private lateinit var btnChangeProduct: Button
     private lateinit var nameProduct: EditText
     private lateinit var type: Spinner
     private lateinit var costProduct: EditText
     private lateinit var typeProduct: Spinner
     private lateinit var location: AutoCompleteTextView
     private lateinit var description: EditText
-    @SuppressLint("MissingInflatedId", "WrongThread")
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_product)
+        setContentView(R.layout.activity_change_product)
 
         supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.color.gradColor1))
+        supportActionBar?.title = intent.getStringExtra("name")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        imgProductCreate = findViewById(R.id.imgProductCreate)
-        btnCreateProduct = findViewById(R.id.btnAddProduct)
-        nameProduct = findViewById(R.id.etNameProduct)
-        type = findViewById(R.id.spinnerTypes)
-        costProduct = findViewById(R.id.etCostProduct)
-        typeProduct = findViewById(R.id.spinnerTypesProduct)
-        location = findViewById(R.id.etLocationProduct)
-        description = findViewById(R.id.etDescriptionProduct)
+        imgProductChange = findViewById(R.id.imgProductChange)
+        btnChangeProduct = findViewById(R.id.btnChangeThisProduct)
+        nameProduct = findViewById(R.id.etNameProductChange)
+        type = findViewById(R.id.spinnerTypesChange)
+        costProduct = findViewById(R.id.etCostProductChange)
+        typeProduct = findViewById(R.id.spinnerTypesProductChange)
+        location = findViewById(R.id.etLocationProductChange)
+        description = findViewById(R.id.etDescriptionProductChange)
+
+        imageStroke = intent.getStringExtra("img")!!
+        Picasso.get().load(intent.getStringExtra("img")).into(imgProductChange)
+        nameProduct.setText(intent.getStringExtra("name"))
+        costProduct.setText(intent.getStringExtra("cost"))
+        location.setText(intent.getStringExtra("location"))
+        description.setText(intent.getStringExtra("description"))
 
         database = Firebase.database.reference
-
-        Picasso.get()
-            .load("https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d")
-            .into(imgProductCreate)
-        imgProductCreate.setOnClickListener {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(photoPickerIntent, 1)
-        }
 
         val adapter: ArrayAdapter<*> = ArrayAdapter.createFromResource(
             this, R.array.types,
@@ -85,7 +85,7 @@ class CreateProductActivity : AppCompatActivity() {
                 snapshot.children.forEach { street ->
                     snapshot.child(street.key!!).children.forEach {num->
                         streets.add(street.key + ", " +
-                            snapshot.child(street.key!!).child(num.key!!).getValue(String::class.java)!!)
+                                snapshot.child(street.key!!).child(num.key!!).getValue(String::class.java)!!)
                     }
                     //streets.add(snapshot.child(street.key!!).getValue(String::class.java)!!)
                 }
@@ -116,13 +116,19 @@ class CreateProductActivity : AppCompatActivity() {
             }
         type.onItemSelectedListener = itemSelectedListener
 
-        btnCreateProduct.setOnClickListener {
-            CheckFeel()
+        imgProductChange.setOnClickListener {
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent, 1)
         }
 
+        btnChangeProduct.setOnClickListener {
+            CheckFeel(intent.getStringExtra("uid")!!)
+            //Toast.makeText(this, "Должно быть изменено", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun CheckFeel() {
+    private fun CheckFeel(uid: String) {
         if (nameProduct.text.toString().isBlank()) {
             Toast.makeText(this, "Название не указано", Toast.LENGTH_SHORT).show()
             return
@@ -144,14 +150,14 @@ class CreateProductActivity : AppCompatActivity() {
         var userLog = Firebase.auth.currentUser
         var keyPhoto = UUID.randomUUID().toString();
         imageKey = keyPhoto
-        var strName = userLog!!.uid + "/" + keyPhoto + ".jpg"
+        var strName = userLog!!.uid + "/" + imageKey + ".jpg"
         imageStroke = strName;
         storageReference = storageReference.child(strName)
 
         // Get the data from an ImageView as bytes
-        imgProductCreate.isDrawingCacheEnabled = true
-        imgProductCreate.buildDrawingCache()
-        val bitmap = (imgProductCreate.drawable as BitmapDrawable).bitmap
+        imgProductChange.isDrawingCacheEnabled = true
+        imgProductChange.buildDrawingCache()
+        val bitmap = (imgProductChange.drawable as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -160,16 +166,6 @@ class CreateProductActivity : AppCompatActivity() {
         progressDialog.setTitle("Загрузка...")
         progressDialog.show()
 
-        var cost: String = if (type.selectedItem == "Продажа") costProduct.text.toString() + " руб."
-        else type.selectedItem.toString()
-
-        var productAdd = AddProduct(
-            nameProduct.text.toString(), cost,
-            typeProduct.selectedItem.toString(), description.text.toString(),
-            location.text.toString()
-        )
-        database.child("Users").child(userLog!!.uid).child("products")
-            .child(imageKey).setValue(productAdd)
         storageReference.putBytes(data)
             .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot> { taskSn -> // Got the uri
                 progressDialog.dismiss()
@@ -177,21 +173,31 @@ class CreateProductActivity : AppCompatActivity() {
                 //database = Firebase.database.reference
                 //storageReference = storageReference.child(imageStroke)
 
+                var cost: String = if (type.selectedItem == "Продажа") costProduct.text.toString() + " руб."
+                else type.selectedItem.toString()
+
                 var uriImage = "https://firebasestorage.googleapis.com/v0/b/my-application-f8aff.appspot.com/o/def.jpg?alt=media&token=7e24bbcf-a4d7-4020-b501-94049d30f77d"
 
                 storageReference.downloadUrl
                     .addOnSuccessListener(OnSuccessListener<Uri> { uri -> // Got the uri
                         uriImage = uri.toString()
-                        productAdd.image = uriImage
+
+                        var product = AddProduct(
+                            nameProduct.text.toString(), cost,
+                            typeProduct.selectedItem.toString(), description.text.toString(),
+                            location.text.toString(), uriImage
+                        )
+
+                        //database.child("Users").child(userLog!!.uid).child("products").child(oldUrl!!).removeValue()
                         database.child("Users").child(userLog!!.uid).child("products")
-                            .child(imageKey).setValue(productAdd)
+                            .child(uid).setValue(product)
                         Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show()
                     }).addOnFailureListener(OnFailureListener {
                         Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show()
                     })
                 finish()
             }).addOnFailureListener(OnFailureListener {
-                progressDialog.dismiss()
+                // Handle any errors
             }).addOnProgressListener(OnProgressListener<UploadTask.TaskSnapshot> { taskSn ->
                 val progress: Double = (100.0
                         * taskSn.bytesTransferred
@@ -203,17 +209,13 @@ class CreateProductActivity : AppCompatActivity() {
             })
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         var bitmap: Bitmap = Bitmap.createBitmap(100, 100,
             Bitmap.Config.ARGB_8888);
-        val imageView: ImageView = findViewById(R.id.imgProductCreate)
+        val imageView: ImageView = findViewById(R.id.imgProductChange)
 
         when (requestCode) {
             1 -> if (resultCode === RESULT_OK) {
@@ -255,5 +257,10 @@ class CreateProductActivity : AppCompatActivity() {
                 startActivityForResult(cropIntent, 1)
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

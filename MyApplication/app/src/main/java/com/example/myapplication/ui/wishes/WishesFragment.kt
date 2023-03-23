@@ -55,7 +55,7 @@ class WishesFragment : Fragment() {
                         snapshot2.children.forEach { pr ->
                             val element = Product(
                                 email.key.toString(),
-                                pr.key!!.toInt(),
+                                pr.key!!.toString(),
                                 snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
