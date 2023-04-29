@@ -39,6 +39,7 @@ class WishesFragment : Fragment() {
         database = Firebase.database.reference
         val userLog = Firebase.auth.currentUser
         val textWishes: TextView = view.findViewById(R.id.textWishes)
+
         if (listWishes.size == 0) textWishes.text = "Список желаний пуст"
         else textWishes.text = ""
         recyclerView = view.findViewById(R.id.wishesRecycler)

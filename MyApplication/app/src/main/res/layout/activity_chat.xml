@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_alignParentBottom="true">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messageUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:smoothScrollbar="true"
+        app:layout_constraintBottom_toTopOf="@+id/etMessageUser"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/etMessageUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="Введите сообщение..."
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="#757575" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

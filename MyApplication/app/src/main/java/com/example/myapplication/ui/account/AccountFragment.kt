@@ -1,12 +1,16 @@
 package com.example.myapplication.ui.account
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
@@ -20,12 +24,16 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 
 
 class AccountFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
+    private lateinit var imgAvatar: ImageView
+
+    private var mCropImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -119,6 +127,62 @@ class AccountFragment : Fragment() {
                 recyclerView = view.findViewById(R.id.spisokUser)
                 recyclerView.layoutManager = GridLayoutManager(view.context, 2)
                 recyclerView.adapter = CustomRecyclerAdapterForUser(products)
+            }
+        }
+
+        imgAvatar = view.findViewById(R.id.profile_image)
+        imgAvatar.setOnClickListener {
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent, 1)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            1 -> if (resultCode === AppCompatActivity.RESULT_OK) {
+                var bitmap: Bitmap = Bitmap.createBitmap(100, 100,
+                    Bitmap.Config.ARGB_8888);
+                val imageView: ImageView = view!!.findViewById(R.id.profile_image)
+
+                val selectedImage: Uri? = data?.data
+                mCropImageUri = selectedImage
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(context?.contentResolver, selectedImage)
+                    val width = bitmap.width
+                    val height = bitmap.height
+                    val newWidth = if (height > width) width else height
+                    val newHeight =
+                        if (height > width) height - (height - width) else height
+                    var cropW = (width - height) / 2
+                    cropW = if (cropW < 0) 0 else cropW
+                    var cropH = (height - width) / 2
+                    cropH = if (cropH < 0) 0 else cropH
+
+                    bitmap = Bitmap.createBitmap(bitmap, cropW, cropH, newWidth, newHeight)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                imageView.setImageBitmap(bitmap)
+            }
+            100 -> if (resultCode == AppCompatActivity.RESULT_OK) {
+                var cropIntent = Intent("com.android.camera.action.CROP")
+                // indicate image type and Uri
+                cropIntent.setDataAndType(data?.data, "image/*")
+                // set crop properties here
+                cropIntent.putExtra("crop", true)
+                // indicate aspect of desired crop
+                cropIntent.putExtra("aspectX", 1)
+                cropIntent.putExtra("aspectY", 1)
+                // indicate output X and Y
+                cropIntent.putExtra("outputX", 128)
+                cropIntent.putExtra("outputY", 128)
+                // retrieve data on return
+                cropIntent.putExtra("return-data", true)
+                // start the activity - we handle returning in onActivityResult
+                startActivityForResult(cropIntent, 1)
             }
         }
     }

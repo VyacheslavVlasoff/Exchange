@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
         database.child("Streets").child("1-я Булатовская улица").setValue(elements)*/
 
         //список желаний
-        val wishes = mutableListOf<Wish>()
+/*        val wishes = mutableListOf<Wish>()
         database.child("Users").child(userLog?.uid!!).child("wishes").get().addOnCompleteListener { wish ->
             if (wish.isSuccessful) {
                 val snapshot2 = wish.result
@@ -77,11 +77,25 @@ class HomeFragment : Fragment() {
                     )
                 }
             }
+        }*/
+
+        listWishes.clear()
+        database.child("Users").child(userLog?.uid!!).child("wishes").get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val snapshot = it.result
+                snapshot.children.forEach { item ->
+                    listWishes.add(Wish(
+                        snapshot.child(item.key!!).child("uid").getValue(String::class.java)!!,
+                        snapshot.child(item.key!!).child("prodId").getValue(String::class.java)!!,
+                        snapshot.child(item.key!!).child("request").getValue(Boolean::class.java)!!
+                    ))
+                }
+            }
         }
 
-        for(wish in wishes) {
+/*        for(wish in wishes) {
             listWishes.add(wish)
-        }
+        }*/
 
         //список товаров
         var products = mutableListOf<Product>()

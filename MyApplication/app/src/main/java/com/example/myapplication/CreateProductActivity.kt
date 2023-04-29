@@ -189,6 +189,8 @@ class CreateProductActivity : AppCompatActivity() {
                     }).addOnFailureListener(OnFailureListener {
                         Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show()
                     })
+
+                MainActivity().recreate()
                 finish()
             }).addOnFailureListener(OnFailureListener {
                 progressDialog.dismiss()

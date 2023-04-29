@@ -1,17 +1,24 @@
 package com.example.myapplication
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.type.DateTime
 import com.squareup.picasso.Picasso
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ProductActivity : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
@@ -53,6 +60,12 @@ class ProductActivity : AppCompatActivity() {
                 listWishes.add(Wish(luid!!, lprodId!!))
                 database.child("Users").child(userLog?.uid!!).child("wishes").setValue(listWishes)
                 Toast.makeText(this, "Добавлено в желаемое", Toast.LENGTH_SHORT).show()
+                database.child("Users").child(userLog?.uid!!).child("ChatMessage").child(luid).
+                    child(UUID.randomUUID().toString()).setValue(ChatMessage("", "", LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm:ss"))))
+                database.child("Users").child(luid).child("ChatMessage").child(userLog?.uid!!).
+                    child(UUID.randomUUID().toString()).setValue(ChatMessage("", "", LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy.MM.dd, HH:mm:ss"))))
             }
             else {
                 Toast.makeText(this, "Добавлено в желаемое", Toast.LENGTH_SHORT).show()

@@ -9,6 +9,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.database.DatabaseReference
+import com.google.type.DateTime
+import java.time.LocalDateTime
 
 data class Product(val uid: String,
                    val prodId: String,
@@ -37,6 +39,8 @@ data class Wish(val uid: String,
                 val prodId: String,
                 val request: Boolean = false
 )
+
+data class ChatMessage(val text: String?, val user: String?, val time: String)
 
 //val listType = listOf<String>("Обувь", "Одежда", "Для дома", "Мебель", "Для детей", "Другое")
 val listWishes = mutableListOf<Wish>()
