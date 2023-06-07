@@ -33,6 +33,12 @@ class AccountFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var imgAvatar: ImageView
 
+    private lateinit var avatar: CircleImageView
+    private lateinit var nameUser: TextView
+    private lateinit var surnameUser: TextView
+    private lateinit var phoneUser: TextView
+    private lateinit var emailUser: TextView
+
     private var mCropImageUri: Uri? = null
 
     override fun onCreateView(
@@ -65,6 +71,13 @@ class AccountFragment : Fragment() {
             startActivity(Intent(view.context, CreateProductActivity::class.java))
         }
 
+
+        avatar = view.findViewById(R.id.profile_image)
+        nameUser  = view.findViewById(R.id.textViewNameUser)
+        surnameUser = view.findViewById(R.id.textViewSurnameUser)
+        phoneUser = view.findViewById(R.id.textViewPhoneUser)
+        emailUser = view.findViewById(R.id.textViewMailUser)
+
         val userLog = Firebase.auth.currentUser
         database = Firebase.database.reference
         database.child("Users").get().addOnCompleteListener { user ->
@@ -72,11 +85,6 @@ class AccountFragment : Fragment() {
                 val snapshot = user.result
                 snapshot.children.forEach { id ->
                 if (id.key == userLog?.uid) {
-                    val avatar: CircleImageView = view.findViewById(R.id.profile_image)
-                    val nameUser: TextView = view.findViewById(R.id.textViewNameUser)
-                    val surnameUser: TextView = view.findViewById(R.id.textViewSurnameUser)
-                    val phoneUser: TextView = view.findViewById(R.id.textViewPhoneUser)
-                    val emailUser: TextView = view.findViewById(R.id.textViewMailUser)
                     Picasso.get().load(snapshot.child(userLog?.uid!!).child("avatar").getValue(String::class.java)).into(avatar)
                     nameUser.text = snapshot.child(userLog?.uid!!).child("name").getValue(String::class.java)
                     surnameUser.text = snapshot.child(userLog?.uid!!).child("surname").getValue(String::class.java)
@@ -91,8 +99,6 @@ class AccountFragment : Fragment() {
             if (user.isSuccessful) {
                 val snapshot = user.result
                 val products = mutableListOf<Product>()
-                //val userProducts = mutableListOf<Product>()
-                //val users = mutableListOf<User>()
                 snapshot.children.forEach { email ->
                     if (email.key == userLog?.uid) {
                         val snapshot2 = snapshot.child(email.key!!).child("products")
@@ -107,21 +113,8 @@ class AccountFragment : Fragment() {
                                 snapshot2.child(pr.key!!).child("location").getValue(String::class.java),
                                 snapshot2.child(pr.key!!).child("image").getValue(String::class.java)
                             )
-                            //userProducts.add(element)
                             products.add(element)
                         }
-                        /*users.add(
-                            User(
-                                snapshot.child(email.key!!).child("name").getValue(String::class.java),
-                                snapshot.child(email.key!!).child("surname").getValue(String::class.java),
-                                snapshot.child(email.key!!).child("phone").getValue(String::class.java),
-                                userProducts,
-                                snapshot.child(email.key!!).child("image").getValue(String::class.java)
-                            )
-                        )
-
-                         */
-                        //userProducts.removeAll(products)
                     }
                 }
                 recyclerView = view.findViewById(R.id.spisokUser)
@@ -138,6 +131,26 @@ class AccountFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val userLog = Firebase.auth.currentUser
+        database = Firebase.database.reference
+        database.child("Users").get().addOnCompleteListener { user ->
+            if (user.isSuccessful) {
+                val snapshot = user.result
+                snapshot.children.forEach { id ->
+                    if (id.key == userLog?.uid) {
+                        Picasso.get().load(snapshot.child(userLog?.uid!!).child("avatar").getValue(String::class.java)).into(avatar)
+                        nameUser.text = snapshot.child(userLog?.uid!!).child("name").getValue(String::class.java)
+                        surnameUser.text = snapshot.child(userLog?.uid!!).child("surname").getValue(String::class.java)
+                        phoneUser.text = snapshot.child(userLog?.uid!!).child("phone").getValue(String::class.java)
+                        emailUser.text = userLog?.email
+                    }
+                }
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

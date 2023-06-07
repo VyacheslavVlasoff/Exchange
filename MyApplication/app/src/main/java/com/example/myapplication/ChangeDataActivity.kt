@@ -65,7 +65,7 @@ class ChangeDataActivity : AppCompatActivity() {
             etPhone.hideKeyboard()
             etEmail.hideKeyboard()
             fragmentManager.findFragmentById(R.id.navigation_account)
-            MainActivity().recreate()
+            //MainActivity().recreate()
             finish()
         }
 

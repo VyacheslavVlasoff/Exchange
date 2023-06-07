@@ -23,7 +23,8 @@
                 android:layout_marginHorizontal="5dp"
                 android:scaleType="fitCenter"
                 android:layout_height="160dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:background="@drawable/animated_rotate"/>
 
         <ImageButton
             android:id="@+id/imgBtnHeart"

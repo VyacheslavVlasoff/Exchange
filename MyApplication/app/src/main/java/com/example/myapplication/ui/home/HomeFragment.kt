@@ -1,29 +1,36 @@
 package com.example.myapplication.ui.home
 
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.*
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.picasso.Picasso
+import java.text.DecimalFormat
 import java.util.*
 
 
+var sortList = booleanArrayOf(true, true, true)
 class HomeFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,8 +47,9 @@ class HomeFragment : Fragment() {
         R.id.open_sort -> {
             //findNavController().navigate(R.id.sortFragment)
             val sortFr: SortFragment = SortFragment()
+            sortFr.setTargetFragment(this, 1)
             val ft: FragmentTransaction? = fragmentManager?.beginTransaction()
-            sortFr.show(ft!!, "dialog")
+            sortFr.show(ft!!, "myDialog")
             true
         }
         else -> {
@@ -49,35 +57,23 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        Toast.makeText(view?.context, "${sortList[0]} ${sortList[1]} ${sortList[2]}", Toast.LENGTH_SHORT).show()
+        showProductsBySort()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        sortList = booleanArrayOf(true, true, true)
 
         val userLog = Firebase.auth.currentUser
         recyclerView = view.findViewById(R.id.spisok)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
 
         database = Firebase.database.reference
-
-        /*var elements = mutableListOf(
-            "4","52","54","56"
-        )
-        database.child("Streets").child("1-я Булатовская улица").setValue(elements)*/
-
-        //список желаний
-/*        val wishes = mutableListOf<Wish>()
-        database.child("Users").child(userLog?.uid!!).child("wishes").get().addOnCompleteListener { wish ->
-            if (wish.isSuccessful) {
-                val snapshot2 = wish.result
-                snapshot2.children.forEach { pr ->
-                    wishes.add(Wish(
-                        userLog.uid.toString(),
-                        pr.key!!.toString(),
-                        snapshot2.child(pr.key!!).child("request").getValue(Boolean::class.java)!!
-                    )
-                    )
-                }
-            }
-        }*/
 
         listWishes.clear()
         database.child("Users").child(userLog?.uid!!).child("wishes").get().addOnCompleteListener {
@@ -93,20 +89,14 @@ class HomeFragment : Fragment() {
             }
         }
 
-/*        for(wish in wishes) {
-            listWishes.add(wish)
-        }*/
-
         //список товаров
         var products = mutableListOf<Product>()
         database.child("Users").get().addOnCompleteListener { user ->
             if (user.isSuccessful) {
                 val snapshot = user.result
                 products = mutableListOf<Product>()
-                //listProduct.clear()
                 val userProducts = mutableListOf<Product>()
                 val users = mutableListOf<User>()
-                //var wishes = mutableListOf<Wish>()
                 snapshot.children.forEach { email ->
                     if (email.key != userLog?.uid) {
                         var snapshot2 = snapshot.child(email.key!!).child("products")
@@ -156,17 +146,64 @@ class HomeFragment : Fragment() {
             }
 
         })
-        /*edittext.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                fun View.hideKeyboard() {
-                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(windowToken, 0)
-                }
-                edittext.hideKeyboard()
-                return@OnEditorActionListener true
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
             }
-            false
-        })*/
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            //edittext.setText(token)
+        })
+
+
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    fun showProductsBySort() {
+        val userLog = Firebase.auth.currentUser
+        database = Firebase.database.reference
+
+        //список товаров
+        var products = mutableListOf<Product>()
+        database.child("Users").get().addOnCompleteListener { user ->
+            if (user.isSuccessful) {
+                val snapshot = user.result
+                products = mutableListOf<Product>()
+                snapshot.children.forEach { email ->
+                    if (email.key != userLog?.uid) {
+                        var snapshot2 = snapshot.child(email.key!!).child("products")
+                        snapshot2.children.forEach { pr ->
+                            val element = Product(
+                                email.key.toString(),
+                                pr.key!!.toString(),
+                                snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("description").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("location").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("image").getValue(String::class.java)
+                            )
+                            if (element.cost == "Бесплатно" && sortList[0]
+                                || element.cost == "Обмен" && sortList[1]
+                                || element.cost != "Бесплатно" && element.cost != "Обмен" && sortList[2])
+                            products.add(element)
+                        }
+                    }
+                }
+                recyclerView.adapter = CustomRecyclerAdapter(products, listWishes)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        showProductsBySort()
     }
 
     private fun filter(text: String, product: MutableList<Product>) {
@@ -212,6 +249,7 @@ class CustomRecyclerAdapter(private val names: List<Product>, private val wishes
         return MyViewHolder(itemView)
     }
 
+    @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.nameText.text = names[position].name
         holder.costText.text = names[position].cost
@@ -233,7 +271,8 @@ class CustomRecyclerAdapter(private val names: List<Product>, private val wishes
                 putExtra("location", names[position].location)
             putExtra("index", holder.index)
             putExtra("uid", names[position].uid)
-            putExtra("prodId", names[position].prodId)}) }
+            putExtra("prodId", names[position].prodId)})
+        }
         holder.imgHeart.setOnClickListener {
             if (holder.index == 0) {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)

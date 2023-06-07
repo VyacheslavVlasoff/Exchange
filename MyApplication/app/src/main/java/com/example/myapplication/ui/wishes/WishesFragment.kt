@@ -26,6 +26,7 @@ class WishesFragment : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
+    private lateinit var textWishes: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,12 +39,54 @@ class WishesFragment : Fragment() {
 
         database = Firebase.database.reference
         val userLog = Firebase.auth.currentUser
-        val textWishes: TextView = view.findViewById(R.id.textWishes)
+        textWishes = view.findViewById(R.id.textWishes)
 
         if (listWishes.size == 0) textWishes.text = "Список желаний пуст"
         else textWishes.text = ""
         recyclerView = view.findViewById(R.id.wishesRecycler)
         recyclerView.layoutManager = GridLayoutManager(view.context, 2)
+
+        //найти список продуктов, которые в списке желаний
+        database.child("Users").get().addOnCompleteListener { user ->
+            if (user.isSuccessful) {
+                val snapshot = user.result
+                val products = mutableListOf<Product>()
+                snapshot.children.forEach { email ->
+                    if (email.key != userLog?.uid) {
+                        var snapshot2 = snapshot.child(email.key!!).child("products")
+                        snapshot2.children.forEach { pr ->
+                            val element = Product(
+                                email.key.toString(),
+                                pr.key!!.toString(),
+                                snapshot2.child(pr.key!!).child("name").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("cost").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("type").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("description").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("location").getValue(String::class.java),
+                                snapshot2.child(pr.key!!).child("image").getValue(String::class.java)
+                            )
+                            for (wish in listWishes) {
+                                if (wish.uid == element.uid && wish.prodId == element.prodId)
+                                {
+                                    products.add(element)
+                                }
+                            }
+                        }
+                    }
+                }
+                recyclerView.adapter = CustomRecyclerAdapterForWishes(products)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        database = Firebase.database.reference
+        val userLog = Firebase.auth.currentUser
+
+        if (listWishes.size == 0) textWishes.text = "Список желаний пуст"
+        else textWishes.text = ""
 
         //найти список продуктов, которые в списке желаний
         database.child("Users").get().addOnCompleteListener { user ->
@@ -111,7 +154,10 @@ class CustomRecyclerAdapterForWishes(private val names: List<Product>) : Recycle
                 putExtra("cost", names[position].cost)
                 putExtra("img", names[position].image)
                 putExtra("description", names[position].description)
-                putExtra("location", names[position].location)}) }
+                putExtra("location", names[position].location)
+                putExtra("index", holder.index)
+                putExtra("uid", names[position].uid)
+                putExtra("prodId", names[position].prodId)})}
         holder.imgHeart.setOnClickListener {
             if (holder.index == 0) {
                 holder.imgHeart.setBackgroundResource(R.drawable.icon_heart_red)

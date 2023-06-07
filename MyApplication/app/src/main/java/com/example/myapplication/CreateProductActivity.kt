@@ -6,8 +6,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,8 @@ import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.util.*
@@ -83,10 +87,11 @@ class CreateProductActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 val snapshot = task.result
                 snapshot.children.forEach { street ->
-                    snapshot.child(street.key!!).children.forEach {num->
-                        streets.add(street.key + ", " +
-                            snapshot.child(street.key!!).child(num.key!!).getValue(String::class.java)!!)
-                    }
+                    streets.add(snapshot.child(street.key!!).getValue(String::class.java)!!)
+                    //snapshot.child(street.key!!).children.forEach {num->
+                    //    streets.add(street.key + ", " +
+                    //        snapshot.child(street.key!!).child(num.key!!).getValue(String::class.java)!!)
+                    //}
                     //streets.add(snapshot.child(street.key!!).getValue(String::class.java)!!)
                 }
             }
@@ -120,7 +125,55 @@ class CreateProductActivity : AppCompatActivity() {
             CheckFeel()
         }
 
+        NewThread().execute()
     }
+
+    class NewThread : AsyncTask<String?, Void?, String?>() {
+        override fun doInBackground(vararg arg: String?): String? {
+
+            val doc: Document
+            var spisok = mutableListOf<String>()
+            try {
+                doc = Jsoup.connect("https://100realt.ru/ivanovo/ulitsy").get()
+                val titles = doc.select("h2")
+                //val streets = doc.select(".col-sm-3")
+                val streets = doc.select(".container.mymain .row")
+                var num = 0
+                for (street in streets) {
+                    num++
+                    var type = ""
+                    when(num) {
+                        1 -> type = "улица "
+                        2 -> type = "проспект "
+                        3 -> type = "переулок "
+                        4 -> type = "проезд "
+                        5 -> type = "тупик "
+                        6 -> type = "аллея "
+                        7 -> type = "шоссе "
+                        else -> type = ""
+                    }
+
+                    var names = street.select(".col-sm-3")
+                    for (strname in names) {
+                        spisok.add(type + strname.text())
+                    }
+                }
+                var database: DatabaseReference = Firebase.database.reference
+                database.child("Streets").setValue(spisok)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            // ничего не возвращаем потому что я так захотел)
+            return null
+        }
+
+        override fun onPostExecute(result: String?) {
+
+            // после запроса обновляем листвью
+
+        }
+    }
+
 
     private fun CheckFeel() {
         if (nameProduct.text.toString().isBlank()) {
